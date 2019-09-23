@@ -1,0 +1,38 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Спсок членов церкви</title>
+    <link href="/assets/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div class="container">
+    <h2>Список членов церкви</h2>
+    <a href="/members/add/" class="btn btn-success" style="color: white;">Добавить</a><br/><br/>
+    <table class="table table-striped" id="mytable">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>ФИО</th>
+            <th>Дата Рождения</th>
+            <th>Год Крещения</th>
+            <th>Телефон</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each results}}
+            <tr onclick="document.location = '/members/{{id}}/view';">
+                    <td>{{ id }}</td>
+                    <td>{{ last_name }} {{ first_name }} {{ surname }}</td>
+                    <td>{{ formatDate birth_date 'DD.MM.YYYY'}}</td>
+                    <td>{{ formatDate baptism_date 'YYYY'}}</td>
+                    <td>{{ phone }}</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</div>
+
+<script src="/assets/js/jquery-3.4.1.js"></script>
+<script src="/assets/js/bootstrap.js"></script>
+</body>
+</html>

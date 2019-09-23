@@ -1,0 +1,29 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Спсок членов церкви</title>
+    <link href="/assets/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+    <link href="/assets/css/all.css" rel="stylesheet" type="text/css"/>
+    <link href="/assets/css/login-form.scss" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div class="container">
+    <div class="wrapper">
+        <form class="form-signin" method="post">
+            {{#if flash.error}}
+                <div class="alert alert-danger">
+                    {{{flash.error}}}
+                </div>
+            {{/if}}
+            <h2 class="form-signin-heading">Авторизация</h2>
+            <input type="text" class="form-control" name="username" placeholder="Имя пользователя" required="" autofocus="" />
+            <input type="password" class="form-control" name="password" placeholder="Пароль" required=""/>
+            <button class="btn btn-lg btn-primary btn-block login-btn" type="submit">Войти</button>
+        </form>
+    </div>
+</div>
+
+<script src="/assets/js/jquery-3.4.1.js"></script>
+<script src="/assets/js/bootstrap.js"></script>
+</body>
+</html>

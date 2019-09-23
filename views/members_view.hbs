@@ -1,0 +1,124 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Просмотр профиля</title>
+    <link href="/assets/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+    <link href="/assets/css/bootstrap-datepicker3.css" rel="stylesheet" type="text/css"/>
+    <link href="/assets/css/all.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div class="container">
+    {{#with member}}
+        <h2>Просмотр профиля {{ last_name }} {{ first_name }} {{ surname }}</h2>
+
+    <form action="/members/{{id}}/update" method="post">
+        <div class="form-group">
+            <label>Фото:</label>
+            <input type="file" accept="image/jpg" id="photoInput" style="display: none;">
+            <img height="300" width="400" src="{{ifCond photoData '!==' null photoData '/assets/img/no_photo.png'}}" id="photoPreview">
+            <a id="deletePhotoId" style="{{ifCond photoData '!==' null '' 'display: none;'}}"><i class="fas fa-times"></i></a>
+            <input type="hidden" id="photoData" name="photoData" value="{{photoData}}">
+            <input type="hidden" name="photo" value="{{photo}}">
+        </div>
+        <div class="form-group">
+            <label>Фамилия:</label>
+            <input type="text" value="{{last_name}}" name="last_name" class="form-control" placeholder="Фамилия">
+            <input type="hidden" name="id" value="{{id}}">
+        </div>
+        <div class="form-group">
+            <label>Имя:</label>
+            <input type="text" value="{{first_name}}" name="first_name" class="form-control" placeholder="Имя">
+        </div>
+        <div class="form-group">
+            <label>Отчество:</label>
+            <input type="text" value="{{surname}}" name="surname" class="form-control" placeholder="Отчество">
+        </div>
+        <div class="form-group">
+            <label>Пол:</label>
+            <div class="form-inline">
+                <div class="form-group">
+                    <input type="radio" value="MALE" name="sex" class="form-control" {{ifCond sex '===' 'MALE' 'checked' ''}}> Мужской
+                </div>
+                <div class="form-group" style="margin-left: 10px">
+                    <input type="radio" value="FEMALE" name="sex" class="form-control" {{ifCond sex '===' 'FEMALE' 'checked' ''}}> Женский
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Дата рождения:</label>
+            <input id="birthDateId" value="{{formatDate birth_date 'DD/MM/YYYY'}}" type="text" name="birth_date" class="form-control" placeholder="Дата рождения">
+        </div>
+        <div class="form-group">
+            <label>Дата крещения:</label>
+            <input id="baptismDateId" value="{{formatDate baptism_date 'DD/MM/YYYY'}}" type="text" name="baptism_date" class="form-control" placeholder="Дата крещения">
+        </div>
+        <div class="form-group">
+            <label>Номер телефона:</label>
+            <input value="{{phone}}" type="text" name="phone" class="form-control" placeholder="Номер телефона">
+        </div>
+        <div class="form-group">
+            <label>Адрес:</label>
+            <input value="{{address}}" type="text" name="address" class="form-control" placeholder="Адрес">
+        </div>
+        <div class="form-group">
+            <label>Дополнительная информация:</label>
+            <textarea name="info" rows="3" class="form-control" placeholder="Дополнительная информация">
+                {{info}}
+            </textarea>
+        </div>
+        <button type="submit" class="btn btn-primary float-right">Обновить</button>
+        <button id="deleteButtonId" type="button" class="btn btn-danger float-left" onclick="deleteMember({{id}})">Удалить</button>
+    </form>
+    {{/with}}
+</div>
+
+<script src="/assets/js/jquery-3.4.1.js"></script>
+<script src="/assets/js/bootstrap.js"></script>
+<script src="/assets/js/bootstrap-datepicker.js"></script>
+</body>
+<script>
+    $('#birthDateId').datepicker({
+        format: "dd/mm/yyyy",
+        autoclose: true
+    });
+    $('#baptismDateId').datepicker({
+        format: "dd/mm/yyyy",
+        autoclose: true
+    });
+
+    function deleteMember(id){
+        if(confirm("Вы уверены?")){
+            window.location.href = '/delete/'+id;
+        }
+    }
+
+    $(document). ready(function(){
+        $('#photoInput').change(function(e){
+            const file = e. target.files[0];
+            const reader  = new FileReader();
+
+            reader.onloadend = function () {
+                $('#photoPreview').attr("src", reader.result);
+                $('#photoData').val(reader.result);
+            };
+
+            if (file) {
+                $('#deletePhotoId').show();
+                reader.readAsDataURL(file);
+            } else {
+                $('#photoPreview').attr("src", '/assets/img/no_photo.png');
+            }
+        });
+
+        $('#photoPreview').on('click', function(){
+            $('#photoInput').trigger('click');
+        });
+
+        $('#deletePhotoId').on('click', function(){
+            $('#photoPreview').attr("src", '/assets/img/no_photo.png');
+            $('#photoData').val('');
+            $('#deletePhotoId').hide();
+        });
+    });
+</script>
+</html>
