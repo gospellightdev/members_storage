@@ -105,7 +105,7 @@ app.get('/', isAuthenticated, (req, res) => {
     const page = req.query.page || 0;
     const pageSize = req.query.pageSize || 20;
 
-    let sql = `SELECT * FROM members limit ${page*20}, ${pageSize}`;
+    let sql = `SELECT * FROM members order by id desc limit ${page*20}, ${pageSize}`;
 
     conn.query(sql, (err, results) => {
         if(err) throw err;
